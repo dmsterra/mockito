@@ -10,7 +10,7 @@ public class CadastrarPessoa {
 		this.apiDosCorreios = apiDosCorreios;
 	}
 	
-	public Pessoa cadastrarPessoa(String nome, String documento, LocalDate nascimento, int cep) {
+	public Pessoa cadastrarPessoa(String nome, String documento, LocalDate nascimento, String cep) {
 		Pessoa pessoa = new Pessoa(nome, documento, nascimento);
 		DadosLocalizacao dadosLocalizacao = apiDosCorreios.buscaDadosCep(cep);
 		pessoa.adicionaDadosEndereco(dadosLocalizacao);
