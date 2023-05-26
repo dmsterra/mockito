@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +29,7 @@ public class CadastrarPessoaTest {
 	private CadastrarPessoa cadastrarPessoa;
 	
 	@Test
-	void cadastrarPessoa() {
+	void testeCadastrarPessoa() {
 		//1.2.INSERCAO DOS DADOS A SEREM MOCKADOS
 		//Dados ficticios do objeto que estou mockando
 		DadosLocalizacao dadosLocalizacao = new DadosLocalizacao("SP", "Atibaia", "Rua Antoni Massoni", "Casa", "Nova Floresta");
@@ -44,6 +45,14 @@ public class CadastrarPessoaTest {
 		assertEquals(dadosLocalizacao.getCidade(), enderecoClayton.getCidade());
 		assertEquals(dadosLocalizacao.getUf(), enderecoClayton.getUf());
 		
+	}
+	
+	//Teste de Mock para o fluxo de exceção do caso de uso, que deve disparar uma exceção por falha na API
+	@Test
+	void testeTentaCadastrarPessoaMasSistemadosCorreiosForaDoAr() {
+		Mockito.when(apiDosCorreios.buscaDadosCep(anyString())).thenThrow(RuntimeException.class);
+		
+		Assertions.assertThrows(RuntimeException.class, ()-> cadastrarPessoa.cadastrarPessoa("Jose", "123456", LocalDate.of(1977, 5, 4), "123456789"));
 	}
 
 }
